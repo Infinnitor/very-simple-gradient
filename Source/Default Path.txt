@@ -1,1 +1,1 @@
-PATH: Gradients\
+PATH: Gradients/
