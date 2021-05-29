@@ -28,3 +28,5 @@ At the moment this program is very simple, however I would like to expand it a b
 - [ ] More colours to act as anchor points (that aren't just RGB)
 
 - [ ] Optimizing the program so that it can generate faster
+
+- [ ] Making a distributable build
