@@ -23,7 +23,7 @@ pygame.init()
 
 
 # The AnchorPoint class just holds some very basic information about the location and colour of the anchor point
-class AnchorPoint():
+class anchor_point():
     def __init__(self, colour, pos, intensity):
 
         # This varaible is not yet used, at the moment it is just for clarifying the intended colour of the AnchorPoint
@@ -117,31 +117,34 @@ def screenshot(win):
 # Main function
 def main(win, anchors):
 
-    # Defining anchor points for different colours
-    RED = anchors[0]
-    BLUE = anchors[1]
-    GREEN = anchors[2]
+    def anchor_average(anchors):
+
+        if len(anchors) == 0:
+            return 0
+
+        anchors_dist = []
+
+        for anchor in anchors:
+            # Maths to determine the intensity of colour (either R, G or B) based on distance
+            a_dist = abs(math.dist((x, y), (anchor.pos)) * (max_colour / max_dist) - max_colour) * anchor.intensity
+            if a_dist >= max_colour:
+                a_dist = max_colour
+
+            anchors_dist.append(a_dist)
+
+        return sum(anchors_dist) / len(anchors_dist)
 
     # Nested for loop that draws like a million pixels
     for y in range(win_h):
 
         for x in range(win_w):
 
-            # Maths to determine the intensity of colour (either R, G or B) based on distance
-            red_dist = abs(math.dist((x, y), (RED.pos)) * (max_colour / max_dist) - max_colour) * RED.intensity
-            if red_dist >= max_colour:
-                red_dist = max_colour
-
-            blue_dist = abs(math.dist((x, y), (BLUE.pos)) * (max_colour / max_dist) - max_colour) * BLUE.intensity
-            if blue_dist >= max_colour:
-                blue_dist = max_colour
-
-            green_dist = abs(math.dist((x, y), (GREEN.pos)) * (max_colour / max_dist) - max_colour) * GREEN.intensity
-            if green_dist >= max_colour:
-                green_dist = max_colour
+            RED = anchor_average(anchors["RED"])
+            GREEN = anchor_average(anchors["GREEN"])
+            BLUE = anchor_average(anchors["BLUE"])
 
             # Drawing THE pixel
-            win.set_at((x, y), (red_dist, green_dist, blue_dist))
+            win.set_at((x, y), (RED, GREEN, BLUE))
 
         # This percentage chance adds some variation into the drawing of the the window
         if random.randint(0, 100) > 0:
@@ -207,15 +210,20 @@ while True:
 
     # List of anchor objects that are passed into the main() function
     anchor_obj = [
-        AnchorPoint(colour="RED", pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25)),
-        AnchorPoint(colour="BLUE", pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25)),
-        AnchorPoint(colour="GREEN", pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25))
+        anchor_point(colour="RED", pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25)),
+        anchor_point(colour="GREEN", pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25)),
+        anchor_point(colour="BLUE", pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25))
     ]
+
+    # Adding the anchors to the anchor dict
+    anchor_dict = {"RED" : [], "GREEN" : [], "BLUE" : []}
+    for a in anchor_obj:
+        anchor_dict[a.colour].append(a)
 
     # Setting the Pygame surface
     window = pygame.display.set_mode((win_w, win_h))
 
     # Since main() returns either True or False we use that to determine if the Pygame window gets closed
-    if not main(window, anchor_obj):
+    if not main(window, anchor_dict):
         pygame.quit()
         quit()

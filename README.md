@@ -26,7 +26,7 @@ The gradient takes a few seconds to load, and you can see it created in real tim
 
 At the moment this program is very simple, however I would like to expand it a bit, here are some plans I have:
 
-- [ ] Adding the ability for more than three anchors to be present
+- [x] Adding the ability for more than three anchors to be present
 
 - [ ] More colours to act as anchor points (that aren't just RGB)
 
