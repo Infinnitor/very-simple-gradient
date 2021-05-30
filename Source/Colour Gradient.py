@@ -26,8 +26,20 @@ pygame.init()
 class anchor_point():
     def __init__(self, colour, pos, intensity):
 
-        # This varaible is not yet used, at the moment it is just for clarifying the intended colour of the AnchorPoint
-        self.colour = colour
+        # Make the colour uppercase, just in case (haha)
+        colour = colour.upper()
+
+        # List of RGB colours, used for assigning a random colour, or checking if a colour is valid
+        rgb_colours = ("RED", "GREEN", "BLUE")
+
+        # If a random colour was requested, then set the anchor point's colour to a random choice from the RGB list
+        if colour == "RANDOM":
+            self.colour = random.choice(rgb_colours)
+
+        # Otherwise, make sure that the colour entered was valid, and then assign then anchor point's colour
+        else:
+            assert colour in rgb_colours, f"{colour} is not an RGB colour, please pick either RED, GREEN, or BLUE"
+            self.colour = colour
 
         # Both pos (a tuple with both x and y) and x/y are collected in order to be more versatile
         self.x = pos[0]; self.y = pos[1]
@@ -81,7 +93,7 @@ def orientate(h, v):
     }
 
     # We have to check that the orientation exists first
-    assert h in h_dict; assert v in v_dict
+    assert h in h_dict, f"{h} is not a valid orientation"; assert v in v_dict, f"{v} is not a valid orientation"
 
     return (h_dict[h], v_dict[v])
 
@@ -117,21 +129,30 @@ def screenshot(win):
 # Main function
 def main(win, anchors):
 
+    # Function for finding the average distance from anchor points of a certain colour
     def anchor_average(anchors):
 
+        # If there are no anchor points in the given list, return 0 instantly to prevent a ZeroDivisionError
         if len(anchors) == 0:
             return 0
 
+        # Defining of all the colour distances from anchors
         anchors_dist = []
 
-        for anchor in anchors:
+        # For loop goes through every anchor in the input list
+        for a in anchors:
+
             # Maths to determine the intensity of colour (either R, G or B) based on distance
-            a_dist = abs(math.dist((x, y), (anchor.pos)) * (max_colour / max_dist) - max_colour) * anchor.intensity
+            a_dist = abs(math.dist((x, y), (a.pos)) * (max_colour / max_dist) - max_colour) * a.intensity
+
+            # If the colour is too powerful, then cap it at 255
             if a_dist >= max_colour:
                 a_dist = max_colour
 
+            # Add the colour intensity to the anchors_dist list
             anchors_dist.append(a_dist)
 
+        # Return the average of the anchors_dist list
         return sum(anchors_dist) / len(anchors_dist)
 
     # Nested for loop that draws like a million pixels
@@ -139,6 +160,7 @@ def main(win, anchors):
 
         for x in range(win_w):
 
+            # Finding the average distance from each colour, by using a list of all anchor points of that colour
             RED = anchor_average(anchors["RED"])
             GREEN = anchor_average(anchors["GREEN"])
             BLUE = anchor_average(anchors["BLUE"])
@@ -210,9 +232,9 @@ while True:
 
     # List of anchor objects that are passed into the main() function
     anchor_obj = [
-        anchor_point(colour=random.choice(("RED", "GREEN", "BLUE")), pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25)),
-        anchor_point(colour=random.choice(("RED", "GREEN", "BLUE")), pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25)),
-        anchor_point(colour=random.choice(("RED", "GREEN", "BLUE")), pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25))
+        anchor_point(colour="RANDOM", pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25)),
+        anchor_point(colour="RANDOM", pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25)),
+        anchor_point(colour="RANDOM", pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25))
     ]
 
     # Adding the anchors to the anchor dict
