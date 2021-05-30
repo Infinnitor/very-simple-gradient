@@ -1,6 +1,6 @@
 # Very Simple Gradient:
 
-This is a very simple program that I made in a day just for fun. As the title says, it's a very simple gradient that is created using Pygame.
+This is a very simple program that I made in a day just for fun. As the title says, it's a very simple gradient that is written with Python, using Pygame.
 
 It's very simple in that the colour of each pixel on the screen is determined by their distance from three anchor points, representing Red, Green, and Blue. Thus, you cannot interpolate between colours that are not RGB. It's also very simple in that it is very unoptimized - drawing a single gradient on a 1080p screen takes around 5 seconds. It may be improved later, but idk.
 
