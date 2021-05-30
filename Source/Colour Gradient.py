@@ -147,7 +147,7 @@ def main(win, anchors):
             win.set_at((x, y), (RED, GREEN, BLUE))
 
         # This percentage chance adds some variation into the drawing of the the window
-        if random.randint(0, 100) > 0:
+        if random.randint(0, 100) > 90:
             pygame.display.update()
 
         # If the user pressed Q, then close the program
@@ -210,9 +210,9 @@ while True:
 
     # List of anchor objects that are passed into the main() function
     anchor_obj = [
-        anchor_point(colour="RED", pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25)),
-        anchor_point(colour="GREEN", pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25)),
-        anchor_point(colour="BLUE", pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25))
+        anchor_point(colour=random.choice(("RED", "GREEN", "BLUE")), pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25)),
+        anchor_point(colour=random.choice(("RED", "GREEN", "BLUE")), pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25)),
+        anchor_point(colour=random.choice(("RED", "GREEN", "BLUE")), pos=(random.randint(0, win_w), random.randint(0, win_h)), intensity=random.uniform(0.8, 1.25))
     ]
 
     # Adding the anchors to the anchor dict
