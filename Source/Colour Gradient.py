@@ -147,7 +147,7 @@ def main(win, anchors):
             win.set_at((x, y), (RED, GREEN, BLUE))
 
         # This percentage chance adds some variation into the drawing of the the window
-        if random.randint(0, 100) > 90:
+        if random.randint(0, 100) > 0:
             pygame.display.update()
 
         # If the user pressed Q, then close the program
