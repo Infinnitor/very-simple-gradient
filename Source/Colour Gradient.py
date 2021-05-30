@@ -98,10 +98,6 @@ def orientate(h, v):
     return (h_dict[h], v_dict[v])
 
 
-def anchor_dist(object):
-    pass
-
-
 # Function for taking screenshots
 def screenshot(win):
 
