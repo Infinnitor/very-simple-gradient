@@ -206,7 +206,9 @@ path_store = open("Default Path.txt", "r").readlines()
 PATH = path_store[0].replace("PATH: ", "").replace("\\", "\\\\").replace("\n", "")
 
 # If the Default Path hasn't been defined, then print a warning
-if PATH.replace(" ", ""):
+if not PATH.replace(" ", ""):
+    input("Warning: Path for storing screenshots is not defined! [press enter to continue]")
+else:
     # number_screenshots variable for keeping track of the number of screenshots that have been taken, uses glob module to load all png files
     source_images = glob.glob(f"{PATH}*.png")
     number_screenshots = len(source_images)
