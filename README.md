@@ -22,8 +22,6 @@ The gradient takes a few seconds to load, and you can see it created in real tim
 
 ![](Sample/3.png?raw=true)
 
-![](Sample/4.png?raw=true)
-
 # Future Updates:
 
 At the moment this program is very simple, however I would like to expand it a bit, here are some plans I have:
