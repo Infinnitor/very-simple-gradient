@@ -32,4 +32,4 @@ At the moment this program is very simple, however I would like to expand it a b
 
 - [ ] Optimizing the program so that it can generate faster
 
-- [ ] Making a distributable build
+- [ ] Making distributable builds for: Windows [x] Mac [ ] Linux [ ]
