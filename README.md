@@ -4,9 +4,13 @@ This is a very simple program that I made in a day just for fun. As the title sa
 
 It's very simple in that the colour of each pixel on the screen is determined by their distance from three anchor points, representing Red, Green, and Blue. Thus, you cannot interpolate between colours that are not RGB. It's also very simple in that it is very unoptimized - drawing a single gradient on a 1080p screen takes around 5 seconds (when using 3 anchors). It may be improved later, but idk.
 
-# Usage:
+# Exeuctable Usage:
 
-To use the program, you will need a couple modules: Pygame - which is used to display and create the gradient, and Screeninfo - which is used to get the size of the monitor in order to maximise the display
+If you want to use the program through the executable, then you can simply run it and it will generate a random gradient. Use the S key to screenshot your gradient, the R key ro load a new one, and the Q key to quit the program. As of now, the usage of the executable is more limited.
+
+# Python Usage:
+
+If you want to modify aspects of the program, however (such as making it less random) then you will need to modify the Python file, as of now. To run this file, you will need a couple modules: Pygame - which is used to display and create the gradient, and Screeninfo - which is used to get the size of the monitor in order to maximise the display
 
 By default, running the program will cause it to create a gradient, where the R, G and B anchor points are all in random places with slightly varying intensity, however you can change this on lines 204 - 206, where the anchor points are instantiated. You can include as many anchor points as you want, as long as they are instantiated with their colour set to either "RED", "GREEN" or "BLUE". Setting it to any other colour will cause a KeyError.
 
