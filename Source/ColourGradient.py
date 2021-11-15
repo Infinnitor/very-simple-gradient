@@ -1,25 +1,36 @@
-# Os is used solely to remove the pygame start message, nothing else
+import sys
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
-# Pygame is obviously used to display the shit
+# Pygame is obviously used to display stuff
 import pygame
 
 # Random is used for shuffling a list, and for adding variation into the displaying of columns
 import random
 
-# We use glob for managing screenshots
+# Glob used for managing screenshots
 import glob
 
 # Math module is used for distance shit
 import math
 
-# Screeninfo so the program can get your monitor size there's prolly a better way idk
+# Screeninfo so the program can get your monitor size
 from screeninfo import get_monitors
 
 # Getting the user's monitors and initilising Pygame
 monitors = get_monitors()
 pygame.init()
+
+
+def fix_path(rel_p):
+    abs_path = os.path.abspath(rel_p)
+
+    if sys.platform == "win32":
+        abs_path = abs_path.replace("/", "\\")
+    else:
+        abs_path = abs_path.replace("\\", "/")
+
+    return abs_path
 
 
 # The AnchorPoint class just holds some very basic information about the location and colour of the anchor point
@@ -41,17 +52,14 @@ class anchor_point():
             assert colour in rgb_colours, f"{colour} is not an RGB colour, please pick either RED, GREEN, or BLUE"
             self.colour = colour
 
-        # Both pos (a tuple with both x and y) and x/y are collected in order to be more versatile
         self.x = pos[0]; self.y = pos[1]
         self.pos = pos
         self.intensity = intensity
 
 
-# A function that we use to check if Pygame is being closed by various input methods
+# Update different potential inputs to pygame
 def check_close():
     for event in pygame.event.get():
-
-        # Ye if the user closes the pygmae then close it bruv
         if event.type == pygame.QUIT:
             return "Q"
 
@@ -60,7 +68,7 @@ def check_close():
     if keys[pygame.K_r]:
         return "R"
 
-    # IF they press Q then we quit
+    # IF they press Q then quit
     if keys[pygame.K_q]:
         return "Q"
 
@@ -73,8 +81,8 @@ def check_close():
     else:
         can_screenshot = True
 
-    # Otherwise we return none
-    return "None"
+    # Otherwise return empty string
+    return ""
 
 
 # Function that converts an orientation into actual numbers
@@ -92,7 +100,6 @@ def orientate(h, v):
         "Bottom" : win_h
     }
 
-    # We have to check that the orientation exists first
     assert h in h_dict, f"{h} is not a valid orientation"; assert v in v_dict, f"{v} is not a valid orientation"
 
     return (h_dict[h], v_dict[v])
@@ -104,22 +111,18 @@ def screenshot(win):
     # Made global here because of Syntax shit
     global can_screenshot
 
-    # If we cant take a screenshot then return instantly
+    # If screenshot cannot be taken return instantly
     if not can_screenshot:
         return
 
-    # We need it to be a fucking global variable ughhhh
     global number_screenshots
 
     # Ye
     pygame.image.save(win, f"{PATH}{number_screenshots}.png")
     number_screenshots += 1
 
-    # We play the shutter sound lol
     shutter_sound.play()
-
-    # And then prevent further screenshots from being taken
-    can_screenshot = False
+    can_screenshot = False  # You can only take on screenshot per gradient
 
 
 # Main function
@@ -172,21 +175,17 @@ def main(win, anchors):
         if check_close() == "Q":
             return False
 
-        # If they pressed R then reset it idk
+        # If they pressed R then reset it
         if check_close() == "R":
             win.fill((0, 0, 0))
             return True
 
-        # If they press S then take a mf screenshot
+        # If they press S then take a screenshot
         if check_close() == "S":
-
-            # We use a function because we epic
             screenshot(win)
 
-    # We need to keep Pygame running even when we're finished drawing, so we have this epic thing right here
+    # Mainloop to continue displaying
     while True:
-
-        # Same shit as above but i have to repeat it
         if check_close() == "Q":
             return False
 
@@ -201,8 +200,8 @@ def main(win, anchors):
         pygame.display.update()
 
 
-# We store the path where images should be saved in a text file adjacent to the Python file
-path_store = open("Default Path.txt", "r").readlines()
+# Store the path where images should be saved in a text file adjacent to the Python file
+path_store = open(fix_path("DefaultPath.txt"), "r").readlines()
 PATH = path_store[0].replace("PATH: ", "").replace("\\", "\\\\").replace("\n", "")
 
 # If the Default Path hasn't been defined, then print a warning
@@ -220,7 +219,7 @@ max_colour = 255
 max_dist = math.dist([0, 0], [win_w, win_h])
 
 # Shutter sound effect lol
-shutter_sound = pygame.mixer.Sound('Camera Shutter.wav')
+shutter_sound = pygame.mixer.Sound(fix_path("CameraShutter.wav"))
 can_screenshot = True
 
 # Funi while loop
@@ -241,7 +240,7 @@ while True:
     # Setting the Pygame surface
     window = pygame.display.set_mode((win_w, win_h))
 
-    # Since main() returns either True or False we use that to determine if the Pygame window gets closed
+    # Since main() returns either True or False use that to determine if the Pygame window gets closed
     if not main(window, anchor_dict):
         pygame.quit()
-        quit()
+        sys.exit()
